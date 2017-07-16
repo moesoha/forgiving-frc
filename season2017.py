@@ -1,5 +1,6 @@
 import cv2
 import ForgivingFRC as forgive
+from networktables import NetworkTable
 __author__="Soha King <soha@lohu.info>"
 
 _GEAR_ONE_SIDE_AREA=[15000,50000]
@@ -11,6 +12,11 @@ vdev.set(cv2.CAP_PROP_FRAME_HEIGHT,forgive.constant._CAMERA_FRAMESIZE[1])
 middle=int(forgive.constant._CAMERA_FRAMESIZE[0]/2)
 
 def main():
+	NetworkTable.setIPAddress('10.54.53.2')
+	NetworkTable.setClientMode()
+	NetworkTable.initialize()
+	nt=NetworkTable.getTable("Forgiving/Vision")
+
 	while 2333366666:
 		ret,image=vdev.read()
 		blur=cv2.GaussianBlur(image,(9,9),0)
@@ -42,16 +48,19 @@ def main():
 			align=forgive.function.alignedToWhere(err,forgive.constant._PIXEL_TOLERANCE)
 			if(align==-1):
 				print('left now, turn RIGHT')
+				nt.putString("turn","right")
 			elif(align==1):
 				print('right now, turn LEFT')
+				nt.putString("turn","left")
 			else:
 				print('center now, GREAT!')
+				nt.putString("turn","great")				
 
-		cv2.imshow("FRC 2017 Vision",result)
-		cv2.waitKey(1)
+		# cv2.imshow("FRC 2017 Vision",result)
+		# cv2.waitKey(1)
 
 	vdev.release()
-	cv2.destroyAllWindows()
+	# cv2.destroyAllWindows()
 
 if(__name__=="__main__"):
 	main()
