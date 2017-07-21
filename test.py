@@ -9,6 +9,7 @@ vdev.set(cv2.CAP_PROP_FRAME_HEIGHT,forgive.constant._CAMERA_FRAMESIZE[1])
 
 while 666:
 	ret,image=vdev.read()
+	imageRaw=image
 	blur=cv2.GaussianBlur(image,(13,13),0)
 	result,mask=forgive.function.singleColorGlass(forgive.constant._HSV_RANGE_GREEN[0],forgive.constant._HSV_RANGE_GREEN[1],blur)
 
@@ -32,7 +33,7 @@ while 666:
 		finalY=int((centersY[0]+centersY[1])/2)
 		cv2.circle(result,(finalX,finalY),5,(255,255,255),-1)
 
-	cv2.imshow("FRC 2017 Vision",result)
+	cv2.imshow("FRC 2017 Vision",imageRaw)
 	cv2.waitKey(1)
 
 vdev.release()

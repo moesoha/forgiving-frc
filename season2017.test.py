@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler,HTTPServer
 from socketserver import ThreadingMixIn
 from threading import Thread
-import sys,os
+import sys
 import cv2
 import time
 import imutils
@@ -24,7 +24,7 @@ class CamHandler(BaseHTTPRequestHandler):
 			self.end_headers()
 			while True:
 				try:
-					r,buf=cv2.imencode(".jpg",imutils.resize(vdev.read(),height=120))
+					r,buf=cv2.imencode(".jpg",imutils.resize(frameFinal,height=240))
 					self.wfile.write("--jpgboundary".encode())
 					self.send_header('Content-Type','image/jpeg')
 					self.end_headers()
@@ -37,6 +37,8 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 	"""Handle requests in a separate thread."""
 
 def main():
+	global frameFinal
+	frameFinal=vdev.read()
 	try:
 		server=ThreadedHTTPServer(("0.0.0.0",5800),CamHandler)
 		target=Thread(target=server.serve_forever,args=())
@@ -50,32 +52,30 @@ def main():
 		while 2333366666:
 			image=vdev.read()
 			blur=cv2.GaussianBlur(image,(9,9),0)
+			frame=image
 			result,mask=forgive.function.singleColorGlass(forgive.constant._HSV_RANGE_CYAN[0],forgive.constant._HSV_RANGE_CYAN[1],blur)
 
-			# cv2.line(frame,(middle,0),(middle,forgive.constant._CAMERA_FRAMESIZE[1]),(205,194,255),2) # output
+			cv2.line(frame,(middle,0),(middle,forgive.constant._CAMERA_FRAMESIZE[1]),(205,194,255),2) # output
 
 			_,contours,_=cv2.findContours(mask.copy(),cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
 			centersX=[]
 			centersY=[]
-			areas=[]
 			print("contourNumber: "+str(len(contours)))
 			ii=0
 			for i in range(len(contours)):
 				cnt=contours[i]
 				area=cv2.contourArea(cnt)
-				if(_GEAR_ONE_SIDE_AREA[0]-2000<area<_GEAR_ONE_SIDE_AREA[1]+2000):
-					areas.append(area)
 				if(_GEAR_ONE_SIDE_AREA[0]<area<_GEAR_ONE_SIDE_AREA[1]):
 					ii+=1
 					goal=forgive.function.polygon(cnt,0.02)
-					# cv2.drawContours(frame,[goal],0,(255,0,0),5) # output
+					cv2.drawContours(frame,[goal],0,(255,0,0),5) # output
 					moments=cv2.moments(goal);
 					centerX,centerY=forgive.function.getCenter(moments)
-					# cv2.circle(frame,(centerX,centerY),5,(255,0,255),-1) # output
+					cv2.circle(frame,(centerX,centerY),5,(255,0,255),-1) # output
 					centersX.append(centerX)
 					centersY.append(centerY)
 			print(" contourSelected: "+str(ii))
-
+			
 			if(len(areas)==2):
 				nt.putNumber("area0",areas[0])
 				nt.putNumber("area1",areas[1])
@@ -83,7 +83,7 @@ def main():
 			if((len(centersX)==2)and(len(centersY)==2)):
 				finalX=int((centersX[0]+centersX[1])/2)
 				finalY=int((centersY[0]+centersY[1])/2)
-				# cv2.circle(frame,(finalX,finalY),5,(255,255,255),-1) # output
+				cv2.circle(frame,(finalX,finalY),5,(255,255,255),-1) # output
 
 				err=finalX-middle
 				align=forgive.function.alignedToWhere(err,forgive.constant._PIXEL_TOLERANCE)
@@ -96,11 +96,9 @@ def main():
 					nt.putString("turn","left")
 				else:
 					print('center now, GREAT! '+str(angle)+' deg')
-					nt.putString("turn","great")
-				nt.putNumber("area0",areas[0])
-				nt.putNumber("area1",areas[1])
+					nt.putString("turn","great")	
 				nt.putNumber("angle",angle)
-
+			frameFinal=result
 			# cv2.imshow("FRC 2017 Vision",result)
 			# cv2.waitKey(1)
 

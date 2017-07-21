@@ -3,17 +3,20 @@ import numpy
 _CAMERA_FRAMESIZE=[1280,720]
 _STREAM_FPS=20
 
-_PIXEL_TOLERANCE=12
+_PIXEL_TOLERANCE=1
+
+_FOV_ANGLE_MS3000=59.02039664
+_DEGREES_PPX=_FOV_ANGLE_MS3000/_CAMERA_FRAMESIZE[0]
 
 _HSV_RANGE_GREEN=[
-	numpy.array([50,50,50]),
-	numpy.array([70,250,300])
+	numpy.array([35,43,46]),
+	numpy.array([77,255,255])
 ]
 _HSV_RANGE_BLUE=[
-	numpy.array([110,50,50]),
-	numpy.array([133,255,255])
+	numpy.array([100,43,46]),
+	numpy.array([124,255,255])
 ]
 _HSV_RANGE_CYAN=[
-	numpy.array([150,50,50]),
-	numpy.array([210,255,255])
+	numpy.array([78,43,46]),
+	numpy.array([99,255,255])
 ]
