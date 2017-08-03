@@ -1,6 +1,3 @@
-from http.server import BaseHTTPRequestHandler,HTTPServer
-from socketserver import ThreadingMixIn
-from threading import Thread
 import sys,os
 import cv2
 import time
