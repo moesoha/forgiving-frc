@@ -12,7 +12,7 @@ Then use `python3 season2017.py` to enjoy! Turning angle and direction will be p
 
 ## Why use this name?
 
-Because "green" means "forgiving" to some degrees. We use bright green LEDs to light up the marking film. Although the finally color camera got is cyan.
+Because "green" means "forgiving" to some degrees. We use bright green LEDs to light up the marking film. Although the finally color that the camera got is cyan.
 
 ![](http://i.imgur.com/mj9lxcS.jpg)
 
