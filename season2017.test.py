@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler,HTTPServer
 from socketserver import ThreadingMixIn
 from threading import Thread
-import sys
+import sys,os
 import cv2
 import time
 import imutils
@@ -12,6 +12,11 @@ __author__="Soha King <soha@lohu.info>"
 _GEAR_ONE_SIDE_AREA=[6000,50000]
 
 os.system("v4l2-ctl -d /dev/video0 -c brightness=130 -c contrast=10 -c saturation=100 -c power_line_frequency=2 -c sharpness=25 -c backlight_compensation=0 -c pan_absolute=0 -c tilt_absolute=0 -c zoom_absolute=0 -c exposure_auto=1,exposure_absolute=39");
+time.sleep(0.6)
+os.system("v4l2-ctl -d /dev/video0 -c brightness=230 -c contrast=10 -c saturation=100 -c power_line_frequency=2 -c sharpness=25 -c backlight_compensation=0 -c pan_absolute=0 -c tilt_absolute=0 -c zoom_absolute=0 -c exposure_auto=1,exposure_absolute=39");
+time.sleep(0.6)
+os.system("v4l2-ctl -d /dev/video0 -c brightness=30 -c contrast=10 -c saturation=100 -c power_line_frequency=2 -c sharpness=25 -c backlight_compensation=0 -c pan_absolute=0 -c tilt_absolute=0 -c zoom_absolute=0 -c exposure_auto=1,exposure_absolute=39");
+time.sleep(0.6)
 
 vdev=forgive.WebcamVideoStream().start()
 middle=int(forgive.constant._CAMERA_FRAMESIZE[0]/2)
@@ -75,10 +80,6 @@ def main():
 					centersX.append(centerX)
 					centersY.append(centerY)
 			print(" contourSelected: "+str(ii))
-			
-			if(len(areas)==2):
-				nt.putNumber("area0",areas[0])
-				nt.putNumber("area1",areas[1])
 
 			if((len(centersX)==2)and(len(centersY)==2)):
 				finalX=int((centersX[0]+centersX[1])/2)
