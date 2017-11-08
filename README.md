@@ -2,7 +2,7 @@
 
 ## How to use?
 
-Plug in your camera*(Microsoft Lifecam HD-3000, or you have to change FOV in `ForgivingFRC/constant.py`)* to RaspberryPi and install some dependencies in shell:
+Plug in your camera *(Microsoft Lifecam HD-3000, or you have to change FOV in `ForgivingFRC/constant.py`)* to RaspberryPi and install some dependencies in shell:
 
 	pip3 install pynetworktables imutils
 
@@ -12,7 +12,7 @@ Then use `python3 season2017.py` to enjoy! Turning angle and direction will be p
 
 ## Why use this name?
 
-Because "green" means "forgiving" to some degrees. We use bright green LEDs to light up the marking film. Although the finally color that the camera got is cyan.
+Because "green" means "forgiving" to some degrees. We use bright green LEDs to light up the marking film. Although the final color that the camera got is cyan.
 
 ![](http://i.imgur.com/mj9lxcS.jpg)
 
